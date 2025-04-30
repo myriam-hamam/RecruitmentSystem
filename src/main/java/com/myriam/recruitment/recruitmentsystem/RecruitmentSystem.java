@@ -1,6 +1,5 @@
 package com.myriam.recruitment.recruitmentsystem;
 
-
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,11 +14,13 @@ public class RecruitmentSystem implements Serializable {
         users = new HashMap<>();
     }
 
+    
     public static RecruitmentSystem getInstance() {
         if (instance == null) {
             instance = loadFromFile("recruitment_data.dat");
         }
         return instance;
+        
     }
 
     public void addUser(User user) {
@@ -85,8 +86,38 @@ public class RecruitmentSystem implements Serializable {
             return new RecruitmentSystem();
         }
     }
-    public Iterable<User> getAllUsers() {
-    return users.values();
-}
 
+    public Iterable<User> getAllUsers() {
+        return users.values();
+    }
+
+    // Main method added to run the system
+    public static void main(String[] args) {
+        RecruitmentSystem system = RecruitmentSystem.getInstance();
+
+        // Create candidates and recruiters as examples
+        Candidate candidate = new Candidate("John Doe", "john@example.com", "password123", "Software Engineer");
+        Recruiter recruiter = new Recruiter("Jane Smith", "jane@example.com", "password456", "Tech Corp");
+
+        // Add users to the system
+        system.addUser(candidate);
+        system.addUser(recruiter);
+
+        // List all users
+        system.listUsers();
+
+        // Save system data to a file
+        system.saveToFile("recruitment_data.dat");
+
+        // Example search
+        system.search("john");
+
+        // Example of login
+        User loggedInUser = system.login("john@example.com", "password123");
+        if (loggedInUser != null) {
+            System.out.println("Login successful: " + loggedInUser.getDetails());
+        } else {
+            System.out.println("Login failed.");
+        }
+    }
 }
